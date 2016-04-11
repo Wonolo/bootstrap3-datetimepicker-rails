@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'bootstrap3-datetimepicker-rails/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'bootstrap3-datetimepicker-rails-wonolo'
+  spec.name          = 'bootstrap3-datetimepicker-rails'
   spec.version       = Bootstrap3Datetimepicker::Rails::VERSION
   spec.authors       = ['Trevor Strieber', "Kate Cobb"]
   spec.email         = ['trevor@strieber.org', "kate@wonolo.com"]
