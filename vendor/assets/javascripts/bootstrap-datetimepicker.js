@@ -60,6 +60,7 @@
         var picker = {},
             date,
             viewDate,
+            stringTime,
             unset = true,
             input,
             component = false,
@@ -874,8 +875,12 @@
                     element.data('date', date.format(actualFormat));
                     unset = false;
 
-                    if(options.hiddenID){
-                      $(options.hiddenID).val(date.clone().format('x'));
+                    if (options.hiddenID) {
+                        $(options.hiddenID).val(date.clone().format('YYYY-MM-DD HH:mm'));
+                    }
+
+                    if (options.hiddenUnixID) {
+                        $(options.hiddenUnixID).val(date.clone().format('X'));
                     }
 
                     update();
@@ -926,8 +931,8 @@
                 widget = false;
 
                 notifyEvent({
-                  type: 'dp.hide',
-                  date: date.clone()
+                    type: 'dp.hide',
+                    date: date.clone()
                 });
 
                 input.blur();
@@ -1228,11 +1233,9 @@
                     input.focus();
                 }
 
-
-                  notifyEvent({
+                notifyEvent({
                     type: 'dp.show'
-                  });
-
+                });
                 return picker;
             },
 
@@ -1434,8 +1437,8 @@
         };
 
 
-        picker.isOpen = function(){
-            return !!widget
+        picker.isOpen = function () {
+            return !!widget;
         };
 
         picker.toggle = toggle;
@@ -1707,14 +1710,24 @@
             return picker;
         };
 
-        picker.hiddenID = function(hiddenID){
-          if (arguments.length === 0) {
-              return options.hiddenID;
-          }
+        picker.hiddenID = function (hiddenID) {
+            if (arguments.length === 0) {
+                return options.hiddenID;
+            }
 
 
-          options.hiddenID = hiddenID;
-          return picker;
+            options.hiddenID = hiddenID;
+            return picker;
+        };
+
+        picker.hiddenUnixID = function (hiddenUnixID) {
+            if (arguments.length === 0) {
+                return options.hiddenUnixID;
+            }
+
+
+            options.hiddenUnixID = hiddenUnixID;
+            return picker;
         };
 
         picker.minDate = function (minDate) {
@@ -1772,7 +1785,7 @@
 
             if (typeof defaultDate === 'string') {
                 if (defaultDate === 'now' || defaultDate === 'moment') {
-                    defaultMoment();
+                    defaultDate = moment();
                 }
             }
 
@@ -2113,7 +2126,7 @@
             return picker;
         };
 
-        picker.getMoment = function (d) {
+        picker.getMoment = function () {
             return moment();
             // return getMoment(d);
         };
@@ -2364,14 +2377,14 @@
             picker.disable();
         }
         if (input.is('input') && input.val().trim().length !== 0) {
-          var stringTime = input.val().trim();
-          if(typeof stringTime === "string"){
-            stringTime = ++stringTime;
-          }
+            stringTime = input.val().trim();
+            if (typeof stringTime === 'string') {
+                stringTime = ++stringTime;
+            }
 
-          if(!moment.isMoment(stringTime)){
-            stringTime = moment(stringTime);
-          }
+            if (!moment.isMoment(stringTime)) {
+                stringTime = moment(stringTime);
+            }
             setValue(parseInputDate(stringTime));
         }
         else if (options.defaultDate && input.attr('placeholder') === undefined) {
@@ -2409,6 +2422,7 @@
         minDate: false,
         maxDate: false,
         hiddenID: false,
+        hiddenUnixID: false,
         useCurrent: true,
         collapse: true,
         locale: moment.locale(),
